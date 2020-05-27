@@ -28,16 +28,16 @@ var stop = false;
 var fps, fpsInterval, startTime, now, then, elapsed;
 
 var checkResize = function(){
-        ctx.canvas.width = window.innerWidth;
-        ctx.canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 };
 
 var previousOrientation = window.orientation;
 var checkOrientation = function(){
     if(window.orientation !== previousOrientation){
         previousOrientation = window.orientation;
-        ctx.canvas.width = window.innerWidth;
-        ctx.canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
     checkResize();
 };
@@ -134,10 +134,10 @@ function animate(newtime) {
 
 function draw() {
   
-  canvas.style.width = window.innerWidth;
-  canvas.style.height = window.innerHeight;
-  W = window.innerWidth;
-  H = window.innerHeight;
+  W = canvas.style.width = window.innerWidth;
+  H = canvas.style.height = window.innerHeight;
+  // W = canvas.width = window.innerWidth;
+  // H = canvas.height = window.innerHeight;
 
   
   
@@ -148,7 +148,7 @@ function draw() {
   ctx.fillRect(0,0, W, H);
   
  
-  ripples(ctx, 0.5*canvas.width, 0.5*canvas.height, scale, fold, separation, thickness, space, num_ripples, -time/rate);
+  ripples(ctx, 0.5*W, 0.5*H, scale, fold, separation, thickness, space, num_ripples, -time/rate);
   
   
   time += 1;
