@@ -136,11 +136,9 @@ function draw() {
   
   let dpr = window.devicePixelRatio || 1;
 
-  W = canvas.style.width =  window.innerWidth;
-  H = canvas.style.height =  window.innerHeight;
-  // W = canvas.width = window.innerWidth;
-  // H = canvas.height = window.innerHeight;
-
+  W = canvas.style.width =  Math.floor(window.innerWidth*dpr); //window.innerWidth;
+  H = canvas.style.height =  Math.floor(window.innerHeight*dpr); //window.innerHeight;
+  
   
   
   var hue = (time/color_rate + 250)%360;
