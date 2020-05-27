@@ -134,10 +134,19 @@ function animate(newtime) {
 
 function draw() {
   
+<<<<<<< Updated upstream
   canvas.style.width = window.innerWidth;
   canvas.style.height = window.innerHeight;
   W = window.innerWidth;
   H = window.innerHeight;
+=======
+  let dpr = window.devicePixelRatio || 1;
+
+  W = canvas.style.width =  window.innerWidth;
+  H = canvas.style.height =  window.innerHeight;
+  // W = canvas.width = window.innerWidth;
+  // H = canvas.height = window.innerHeight;
+>>>>>>> Stashed changes
 
   
   
@@ -147,9 +156,16 @@ function draw() {
   ctx.fillStyle = 'hsla('+hue_string+',100%,30%,'+ alpha_string + ')';
   ctx.fillRect(0,0, W, H);
   
+<<<<<<< Updated upstream
  
   ripples(ctx, 0.5*canvas.width, 0.5*canvas.height, scale, fold, separation, thickness, space, num_ripples, -time/rate);
   
+=======
+  ctx.save();
+  ctx.scale(dpr,dpr);
+  ripples(ctx, 0.5*W, 0.5*H, scale, fold, separation, thickness, space, num_ripples, -time/rate);
+  ctx.restore();
+>>>>>>> Stashed changes
   
   time += 1;
     
