@@ -136,8 +136,8 @@ function draw() {
   
   let dpr = window.devicePixelRatio || 1;
 
-  W = canvas.style.width =  Math.floor(window.innerWidth*dpr); //window.innerWidth;
-  H = canvas.style.height =  Math.floor(window.innerHeight*dpr); //window.innerHeight;
+  W = canvas.style.width =  window.innerWidth;
+  H = canvas.style.height =  window.innerHeight;
   
   
   
@@ -147,10 +147,10 @@ function draw() {
   ctx.fillStyle = 'hsla('+hue_string+',100%,30%,'+ alpha_string + ')';
   ctx.fillRect(0,0, W, H);
   
-  ctx.save();
-  ctx.scale(dpr,dpr);
-  ripples(ctx, 0.5*W, 0.5*H, scale, fold, separation, thickness, space, num_ripples, -time/rate);
-  ctx.restore();
+  //ctx.save();
+  //ctx.scale(dpr,dpr);
+  ripples(ctx, 0.5*W, 0.5*H, scale*dpr, fold, separation, thickness, space, num_ripples, -time/rate);
+  //ctx.restore();
   
   time += 1;
     
