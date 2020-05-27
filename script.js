@@ -28,16 +28,16 @@ var stop = false;
 var fps, fpsInterval, startTime, now, then, elapsed;
 
 var checkResize = function(){
-        ctx.canvas.width = window.innerWidth;
-        ctx.canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 };
 
 var previousOrientation = window.orientation;
 var checkOrientation = function(){
     if(window.orientation !== previousOrientation){
         previousOrientation = window.orientation;
-        ctx.canvas.width = window.innerWidth;
-        ctx.canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
     checkResize();
 };
