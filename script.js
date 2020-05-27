@@ -6,9 +6,6 @@ var separation = 200;
 var thickness = 1;
 var space = 20;
 
-var width;
-var height;
-
 var time = 0;
 var rate = 200;
 var color_rate = 10;
@@ -27,130 +24,25 @@ var stop = false;
 
 var fps, fpsInterval, startTime, now, then, elapsed;
 
-var checkResize = function(){
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-};
-
-var previousOrientation = window.orientation;
-var checkOrientation = function(){
-    if(window.orientation !== previousOrientation){
-        previousOrientation = window.orientation;
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    checkResize();
-};
-
 
 
 startAnimating(30);
 
-function getMousePosition(canvas, event) {
-    const rect = canvas.getBoundingClientRect()
-    const x = event.clientX - rect.left
-    const y = event.clientY - rect.top
-    separation = 50+ 200*x/canvas.width;
-    space = 10 + 30*y/canvas.height;
-}
-
-function getTouchPosition(canvas, event) {
-    var touch = event.touches[0];
-    const rect = canvas.getBoundingClientRect()
-    const x = touch.clientX - rect.left
-    const y = touch.clientY - rect.top
-    
-    separation = 50+ 200*x/canvas.width;
-    space = 10 + 30*y/canvas.height;
-}
-
-
-function startAnimating(fps) {
-     ctx.canvas.width = window.innerWidth;
-     ctx.canvas.height = window.innerHeight;
-      
-    window.addEventListener("resize", checkResize, false);
-    fpsInterval = 1000 / fps;
-    then = window.performance.now();
-    startTime = then;
-    
-    animate();
-}
-
-
-function animate(newtime) {
-
-    if (stop) {
-        return;
-    }
-
-    requestAnimationFrame(animate);
-
-    now = newtime;
-    elapsed = now - then;
-
-    if (elapsed > fpsInterval) {
-        then = now - (elapsed % fpsInterval);
-    }
-    
-    canvas.addEventListener('mousedown', e => {
-    get_mouse_pos = true;
-    getMousePosition(canvas, e)
-    alpha = 0.3;
-    });
-      
-    canvas.addEventListener('mouseup', e => {
-    get_mouse_pos = false;
-    alpha = 0.05
-    });
-  
-    canvas.addEventListener('mousemove', function(e) {
-      if(get_mouse_pos) {
-        getMousePosition(canvas, e)
-      }
-    })
-    
-    canvas.addEventListener('touchstart', function(e) {
-        getTouchPosition(canvas,e);
-        event.preventDefault();
-        alpha = 0.3;
-    }, false);
-      
-    canvas.addEventListener('touchend', function(e) {
-       alpha = 0.05;
-    }, false);
-      
-    canvas.addEventListener('touchmove', function(e) {
-        getTouchPosition(canvas,e);
-        event.preventDefault();
-    }, false);
-      
-
-     
-     draw();
-      
-    
-}
 
 function draw() {
   
   let dpr = window.devicePixelRatio || 1;
 
-  W = canvas.style.width =  window.innerWidth;
-  H = canvas.style.height =  window.innerHeight;
-  
+  let W = canvas.style.width =  window.innerWidth;
+  let H = canvas.style.height =  window.innerHeight;
   
   
   var hue = (time/color_rate + 250)%360;
-  var hue_string = hue.toString();
-  var alpha_string = alpha.toString();
-  ctx.fillStyle = 'hsla('+hue_string+',100%,30%,'+ alpha_string + ')';
+  ctx.fillStyle = `hsla(${hue}, 100%, 30%, ${alpha})`;
   ctx.fillRect(0,0, W, H);
   
-  //ctx.save();
-  //ctx.scale(dpr,dpr);
+
   ripples(ctx, 0.5*W, 0.5*H, scale*dpr, fold, separation, thickness, space, num_ripples, -time/rate);
-  //ctx.restore();
   
   time += 1;
     
@@ -186,4 +78,106 @@ function ripples(ctx, x_origin, y_origin, scale, fold, separation, thickness, sp
     ctx.restore();
   }
   ctx.restore();
+}
+
+
+function startAnimating(fps) {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+    
+  window.addEventListener("resize", checkResize, false);
+  fpsInterval = 1000 / fps;
+  then = window.performance.now();
+  startTime = then;
+  
+  animate();
+}
+
+
+function animate(newtime) {
+
+  if (stop) {
+      return;
+  }
+
+  requestAnimationFrame(animate);
+
+  now = newtime;
+  elapsed = now - then;
+
+  if (elapsed > fpsInterval) {
+      then = now - (elapsed % fpsInterval);
+  }
+  
+  canvas.addEventListener('mousedown', e => {
+  get_mouse_pos = true;
+  getMousePosition(canvas, e)
+  alpha = 0.3;
+  });
+    
+  canvas.addEventListener('mouseup', e => {
+  get_mouse_pos = false;
+  alpha = 0.05
+  });
+
+  canvas.addEventListener('mousemove', function(e) {
+    if(get_mouse_pos) {
+      getMousePosition(canvas, e)
+    }
+  })
+  
+  canvas.addEventListener('touchstart', function(e) {
+      getTouchPosition(canvas,e);
+      event.preventDefault();
+      alpha = 0.3;
+  }, false);
+    
+  canvas.addEventListener('touchend', function(e) {
+     alpha = 0.05;
+  }, false);
+    
+  canvas.addEventListener('touchmove', function(e) {
+      getTouchPosition(canvas,e);
+      event.preventDefault();
+  }, false);
+    
+
+   
+   draw();
+    
+  
+}
+
+var checkResize = function(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+};
+
+var previousOrientation = window.orientation;
+var checkOrientation = function(){
+if(window.orientation !== previousOrientation){
+  previousOrientation = window.orientation;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+checkResize();
+};
+
+
+function getMousePosition(canvas, event) {
+  const rect = canvas.getBoundingClientRect()
+  const x = event.clientX - rect.left
+  const y = event.clientY - rect.top
+  separation = 50+ 200*x/canvas.width;
+  space = 10 + 30*y/canvas.height;
+}
+
+function getTouchPosition(canvas, event) {
+  var touch = event.touches[0];
+  const rect = canvas.getBoundingClientRect()
+  const x = touch.clientX - rect.left
+  const y = touch.clientY - rect.top
+  
+  separation = 50+ 200*x/canvas.width;
+  space = 10 + 30*y/canvas.height;
 }
