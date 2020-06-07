@@ -1,10 +1,10 @@
 var record_animation = false;
-const name = "image_"
-const total_frames = 200;
+var name = "image_"
+var total_frames = 200;
 var frame = 0;
 var loop = 0;
-const total_time = 1;
-const rate = total_time/total_frames;
+var total_time = 1;
+var rate = total_time/total_frames;
 
 var fps = 30;
 
@@ -29,7 +29,8 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
 
-var stop_animation = false;
+var stop = false;
+var stop_animation;
 
 var fpsInterval, startTime, now, then, elapsed;
 
@@ -53,12 +54,7 @@ function draw() {
   
 
   ripples(ctx, 0.5*W, 0.5*H, scale*dpr, fold, separation, thickness, space, num_ripples, -time);
-  
-  
-  frame = (frame+1)%total_frames;
-  time = rate*frame;
-    
-  record(record_animation, canvas, name, total_frames, frame, loop)
+   
 }
 
 
@@ -108,7 +104,7 @@ function startAnimating(fps) {
 
 function animate(newtime) {
 
-  if (stop) {
+  if (stop_animation) {
       return;
   }
 
@@ -119,6 +115,35 @@ function animate(newtime) {
 
   if (elapsed > fpsInterval) {
       then = now - (elapsed % fpsInterval);
+
+      draw();
+
+      frame = (frame+1)%total_frames;
+      time = rate*frame;
+
+      if(record_animation) {
+
+        if (loop === 1) { 
+          let frame_number = frame.toString().padStart(total_frames.toString().length, '0');
+          let filename = name+frame_number+'.png'
+            
+          dataURL = canvas.toDataURL();
+          var element = document.createElement('a');
+          element.setAttribute('href', dataURL);
+          element.setAttribute('download', filename);
+          element.style.display = 'none';
+          document.body.appendChild(element);
+          element.click();
+          document.body.removeChild(element);
+        }
+
+        if (frame + 1 === total_frames) {
+            loop += 1;
+        }
+
+        if (loop === 2) { stop_animation = true }
+      }
+    
   }
   
   canvas.addEventListener('mousedown', e => {
@@ -155,7 +180,7 @@ function animate(newtime) {
     
 
    
-   draw();
+   
     
   
 }
