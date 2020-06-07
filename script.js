@@ -1,3 +1,12 @@
+var record_animation = false;
+const name = "image_"
+const total_frames = 200;
+var frame = 0;
+var loop = 0;
+const total_time = 1;
+const rate = total_time/total_frames;
+
+var fps = 30;
 
 var fold = 16;
 var scale = 3;
@@ -7,8 +16,8 @@ var thickness = 1;
 var space = 20;
 
 var time = 0;
-var rate = 200;
-var color_rate = 10;
+//var rate = 200;
+var color_rate = 0;
 var separation_rate = 4*rate;
 var space_rate = .8*rate;
 
@@ -20,33 +29,36 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
 
-var stop = false;
+var stop_animation = false;
 
-var fps, fpsInterval, startTime, now, then, elapsed;
+var fpsInterval, startTime, now, then, elapsed;
 
 
 
-startAnimating(30);
+startAnimating(fps);
 
 
 function draw() {
   
   let dpr = window.devicePixelRatio || 1;
 
-  let W = canvas.style.width =  window.innerWidth;
-  let H = canvas.style.height =  window.innerHeight;
+  let W = canvas.style.width = window.innerWidth = 500;
+  let H = canvas.style.height = window.innerHeight = 500;
   
   
-  var hue = (time/color_rate + 250)%360;
+  
+  var hue = (time*color_rate + 130)%360;
   ctx.fillStyle = `hsla(${hue}, 100%, 30%, ${alpha})`;
   ctx.fillRect(0,0, W, H);
   
 
-  ripples(ctx, 0.5*W, 0.5*H, scale*dpr, fold, separation, thickness, space, num_ripples, -time/rate);
+  ripples(ctx, 0.5*W, 0.5*H, scale*dpr, fold, separation, thickness, space, num_ripples, -time);
   
-  time += 1;
+  
+  frame = (frame+1)%total_frames;
+  time = rate*frame;
     
-  
+  record(record_animation, canvas, name, total_frames, frame, loop)
 }
 
 
@@ -82,8 +94,8 @@ function ripples(ctx, x_origin, y_origin, scale, fold, separation, thickness, sp
 
 
 function startAnimating(fps) {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  //canvas.width = window.innerWidth;
+  //canvas.height = window.innerHeight;
     
   window.addEventListener("resize", checkResize, false);
   fpsInterval = 1000 / fps;
