@@ -44,7 +44,7 @@ function draw() {
 
   ripples(ctx, 0.5*W, 0.5*H, scale*dpr, fold, separation, thickness, space, num_ripples, -time/rate);
   
-  time += 1;
+  time += 1/dpr;
     
   
 }
@@ -85,10 +85,16 @@ function startAnimating(fps) {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
     
-  window.addEventListener("resize", checkResize, false);
   fpsInterval = 1000 / fps;
   then = window.performance.now();
   startTime = then;
+
+  window.onresize = function(e) {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    W = canvas.style.width = window.innerWidth;
+    H= canvas.style.width = window.innerHeight;
+  }
   
   animate();
 }
@@ -140,36 +146,18 @@ function animate(newtime) {
       getTouchPosition(canvas,e);
       event.preventDefault();
   }, false);
-    
-
-   
-   draw();
-    
-  
+      
+  draw();
+     
 }
-
-var checkResize = function(){
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-};
-
-var previousOrientation = window.orientation;
-var checkOrientation = function(){
-if(window.orientation !== previousOrientation){
-  previousOrientation = window.orientation;
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-checkResize();
-};
 
 
 function getMousePosition(canvas, event) {
   const rect = canvas.getBoundingClientRect()
   const x = event.clientX - rect.left
   const y = event.clientY - rect.top
-  separation = 50+ 200*x/canvas.width;
-  space = 10 + 30*y/canvas.height;
+  separation = 50+ 150*x/canvas.width;
+  space = 10 + 20*y/canvas.height;
 }
 
 function getTouchPosition(canvas, event) {
@@ -178,6 +166,6 @@ function getTouchPosition(canvas, event) {
   const x = touch.clientX - rect.left
   const y = touch.clientY - rect.top
   
-  separation = 50+ 200*x/canvas.width;
-  space = 10 + 30*y/canvas.height;
+  separation = 50+ 150*x/canvas.width;
+  space = 10 + 20*y/canvas.height;
 }
