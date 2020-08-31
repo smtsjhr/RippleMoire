@@ -6,6 +6,9 @@ var separation = 200;
 var thickness = 1;
 var space = 20;
 
+var W;
+var H;
+
 var time = 0;
 var rate = 200;
 var color_rate = 10;
@@ -19,6 +22,12 @@ var get_touch_pos = false;
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
+window.onresize = function(e) {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  W = canvas.style.width = window.innerWidth;
+  H = canvas.style.width = window.innerHeight;
+}
 
 var stop = false;
 
@@ -33,8 +42,8 @@ function draw() {
   
   let dpr = window.devicePixelRatio || 1;
 
-  let W = canvas.style.width =  window.innerWidth;
-  let H = canvas.style.height =  window.innerHeight;
+  W = canvas.style.width =  window.innerWidth;
+  H = canvas.style.height =  window.innerHeight;
   
   
   var hue = (time/color_rate + 250)%360;
@@ -88,13 +97,6 @@ function startAnimating(fps) {
   fpsInterval = 1000 / fps;
   then = window.performance.now();
   startTime = then;
-
-  window.onresize = function(e) {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-    W = canvas.style.width = window.innerWidth;
-    H= canvas.style.width = window.innerHeight;
-  }
   
   animate();
 }
