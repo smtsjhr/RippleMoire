@@ -158,10 +158,9 @@ function getMousePosition(canvas, event) {
   const rect = canvas.getBoundingClientRect()
   const x = event.clientX - rect.left
   const y = event.clientY - rect.top
+  
   separation = 50+ 150*x/canvas.width;
   space = 10 + 20*y/canvas.height;
-
-  console.log(x,y);
 }
 
 function getTouchPosition(canvas, event) {
